@@ -1,22 +1,29 @@
 import React, { useContext } from 'react';
 import { MDBServiceContext } from '../movie-db-service-provider';
 import { movieInterface } from '../../interfaces';
-import MovieCard from '../movie-card'
-
+import MovieCard from '../movie-card';
+import './home.css'
 
 const Home = () => {
   const imagesBank: string = 'http://image.tmdb.org/t/p/w342/'
-  const homeContext = useContext(MDBServiceContext);
+  const MDBContext = useContext(MDBServiceContext);
+  const popularList = MDBContext!.popularsList;
+  const favoritsList = MDBContext!.favoritsList;
 
-  const createListOfPopular: Function = (props: any[]): JSX.Element[] => {
-    return props.map((movie: movieInterface) => {
-      const src=`${imagesBank}${movie.poster_path}`;
-      return <MovieCard key={movie.id} src={src} alt={movie.title} />
+  const createList: Function = (movies: any[]): JSX.Element[] => {
+    return movies.map((movie: movieInterface) => {
+      const src = `${imagesBank}${movie.poster_path}`;
+      const { id, title } = movie;
+      const favorited: boolean = favoritsList.includes(id);
+      return (
+        <MovieCard key={id} id={id}
+          src={src} alt={title}
+          favorited={favorited} />);
     });
   }
   return (
-    <div>First render - popular movies list, after the search - resulsts
-      {createListOfPopular(homeContext?.popularsList)}
+    <div className='homePage'>
+      {createList(popularList)}
     </div>
   );
 }
