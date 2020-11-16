@@ -10,7 +10,7 @@ export default class ErrorBoundry extends Component {
   }
   render() {
     if(this.state.hasError) {
-      return <div>Something happend... pls reload the page or try lat0er</div>
+      return <div>Something happend... pls reload the page or try later</div>
     }
     return this.props.children;
   }

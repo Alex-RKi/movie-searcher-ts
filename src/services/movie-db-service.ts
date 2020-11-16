@@ -1,5 +1,4 @@
 // INCOMING PARAMS: id, lang, query;
-
 export default class MovieDBService {
   _API_URL: string = "https://api.themoviedb.org/3/movie/";
   _API_URL_SEACRCH: string = "https://api.themoviedb.org/3/search/movie?";

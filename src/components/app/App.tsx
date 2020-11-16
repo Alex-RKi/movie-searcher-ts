@@ -7,7 +7,7 @@ import { MDBServiceContext, MDBServiceInterface } from '../movie-db-service-prov
 import Footer from '../footer';
 import Header from '../header';
 import Spinner from '../spinner';
-import { Home, Favorits, MovieDescription } from '../pages'
+import { Populars, Favorits, MovieDescription } from '../pages'
 
 interface ResponseInterface {
   readonly page: number,
@@ -18,42 +18,37 @@ interface ResponseInterface {
 
 function App() {
   const movieDBService = new MovieDBService();
-  const initialFavorited: Array<number> = [];
-  const [data, setData] = useState([]);
-  const [favoritsList, setFavorited] = useState(initialFavorited);
-  // const [unfavorited, cutFavorit] = useState([]);
-  console.log(`favorits ` + favoritsList);
+  const initial: any = [];
+  const [popularsList, savePopulars] = useState(initial);
+  const [favoritsList, setFavorited] = useState(initial);
+  console.log(`favorits `);
+  console.log(favoritsList);
+  console.log(`**********`);
 
   useEffect(() => {
     console.log('update state');
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
-        const data: [] = response.results;
-        setData(data);
+        const popularsList: [] = response.results;
+        savePopulars(popularsList);
       })
   }, []);
-  const addToList = (id: number, arr: Array<number> | []): Array<number> => {
-    return [...arr, id];
-  }
-  const removeFromList = (id: any, arr: Array<number> | []): Array<number> => {
 
-    const index: any = arr.indexOf(id);
+  const addToList = (data: object, arr: Array<object> | []): Array<object> => {
+    return [...arr, data];
+  }
+  const removeFromList = (id: any, arr: Array<any> | []): Array<object> => {
+    const index: number = arr.findIndex(elem => elem.id === id);
     return [
       ...arr.slice(0, index),
       ...arr.slice(index + 1)
     ];
   }
-  const toggleFavorit: Function = (id: any) => {
-    favoritsList.includes(id) ? 
-    setFavorited(removeFromList(id, favoritsList)) : 
-    setFavorited(addToList(id, favoritsList));
-
+  const toggleFavorit: Function = (id: any, movieData: object) => {
+    favoritsList.findIndex((movie: any) => movie.id === id) > -1 ?
+      setFavorited(removeFromList(id, favoritsList)) :
+      setFavorited(addToList(movieData, favoritsList));
   }
-  const deleteFromFavorits: Function = (id: number) => {
-    console.log('id');
-
-  }
-
 
   const searchInquire: Function = (query: string) => {
     console.log(query);
@@ -61,30 +56,25 @@ function App() {
   const MDBSProviderData: MDBServiceInterface = {
     id: 3,
     favoritsList: favoritsList,
-    popularsList: data,
+    popularsList: popularsList,
     page: 3,
     toggleFavorit,
-    deleteFromFavorits,
     searchInquire: searchInquire,
     searchResults: []
   }
-
   return (
-    <div>
+    <div className='bg-gradient-light d-flex flex-row flex-grow flex-wrap'>
       <span>{ }</span>
       <ErrorBoundry>
         <MDBServiceContext.Provider value={MDBSProviderData}>
-
           <Router>
             <Header />
             <Switch>
-              <Route path='/' exact component={Home} />
-              <Route path='/description' component={MovieDescription} />
+              <Route path='/' exact component={Populars} />
               <Route path='/favorits' component={Favorits} />
-
+              <Route path='/description' component={MovieDescription} />
 
             </Switch>
-
           </Router>
           <Footer />
         </MDBServiceContext.Provider>
@@ -92,7 +82,6 @@ function App() {
     </div>
   );
 }
-
 export default App;
 
 /*

@@ -3,5 +3,8 @@ interface MDBServiceInterface {
   favoritsList: any;
   popularsList: any;
   page: number;
+  toggleFavorit: Function;
+  searchInquire: Function;
+  searchResults: [];
 }
-export type {MDBServiceInterface}
+export type { MDBServiceInterface };

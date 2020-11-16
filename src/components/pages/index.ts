@@ -1,5 +1,5 @@
 import Favorits from "./favorits";
-import Home from "./home";
+import Populars from "./populars";
 import MovieDescription from "./movie-description";
 
-export { Favorits, Home, MovieDescription };
+export { Favorits, Populars, MovieDescription };

@@ -1,31 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Spinner from '../spinner';
-import MovieDBService from '../../services'
-
+import React from 'react';
+import CardList from '../cards-list';
 
 const Favorits = () => {
-  interface response {
-    readonly page: number,
-    readonly results: [],
-    readonly total_pages: number,
-    readonly total_results: number
-  }
-  type dataType = response | undefined;
-
-  const movieDBService = new MovieDBService();
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    console.log('update state');
-    movieDBService.getPopular()
-      .then((data: dataType) => {
-        setData(data!.results);
-      })
-  }, []);
-  console.log('data set to ' +  data)
-
+  console.log(`favs called!`)
   return (
-    <div>List of favorited titles</div>
+      <CardList mode={'favoritsList'} />
   );
 }
 export default Favorits;
