@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ErrorBoundry from '../error_boundry';
-import MovieDBService from '../../services'
+import MovieDBService from '../../services';
 import { MDBServiceContext, MDBServiceInterface } from '../movie-db-service-provider';
-
+import { movieInterface } from '../../interfaces'
 import Footer from '../footer';
 import Header from '../header';
-import Spinner from '../spinner';
-import { Populars, Favorits, MovieDescription } from '../pages'
+import CardList from '../cards-list';
+import { MovieDescription } from '../pages'
 
 interface ResponseInterface {
   readonly page: number,
@@ -21,17 +21,14 @@ function App() {
   const initial: any = [];
   const [popularsList, savePopulars] = useState(initial);
   const [favoritsList, setFavorited] = useState(initial);
-  console.log(`favorits `);
-  console.log(favoritsList);
-  console.log(`**********`);
 
   useEffect(() => {
     console.log('update state');
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
         const popularsList: [] = response.results;
-        savePopulars(popularsList);
-      })
+        savePopulars(popularsList)
+      });
   }, []);
 
   const addToList = (data: object, arr: Array<object> | []): Array<object> => {
@@ -44,23 +41,24 @@ function App() {
       ...arr.slice(index + 1)
     ];
   }
-  const toggleFavorit: Function = (id: any, movieData: object) => {
-    favoritsList.findIndex((movie: any) => movie.id === id) > -1 ?
+  const toggleFavorit: Function = (movieData: movieInterface) => {
+    const { id } = movieData
+    favoritsList.findIndex((movie: movieInterface) => movie.id === id)
+      > -1 ?
       setFavorited(removeFromList(id, favoritsList)) :
       setFavorited(addToList(movieData, favoritsList));
   }
-
   const searchInquire: Function = (query: string) => {
     console.log(query);
   };
   const MDBSProviderData: MDBServiceInterface = {
-    id: 3,
-    favoritsList: favoritsList,
-    popularsList: popularsList,
+    favoritsList,
+    popularsList,
     page: 3,
     toggleFavorit,
     searchInquire: searchInquire,
-    searchResults: []
+    searchResults: [],
+    recommededList: []
   }
   return (
     <div className='bg-gradient-light d-flex flex-row flex-grow flex-wrap'>
@@ -70,9 +68,18 @@ function App() {
           <Router>
             <Header />
             <Switch>
-              <Route path='/' exact component={Populars} />
-              <Route path='/favorits' component={Favorits} />
-              <Route path='/description' component={MovieDescription} />
+              <Route path='/' exact
+                render={(): any => <CardList list={popularsList} />}
+              />
+              <Route path='/favorits'
+                render={() => <CardList list={favoritsList} />}
+              />
+              <Route path='/description/:id'
+                render={({ match }): any => {
+                  const { id } = match.params;
+                  return <MovieDescription  id={id} />
+                }}
+              />
 
             </Switch>
           </Router>
@@ -99,4 +106,28 @@ title: "The SpongeBob Movie: Sponge on the Run"
 video: false
 vote_average: 8.2
 vote_count: 1238
+*/
+
+/*
+{
+  "popularity": 2139.868,
+  "vote_count": 189,
+  "video": false,
+  "poster_path": "/9HT9982bzgN5on1sLRmc1GMn6ZC.jpg",
+  "id": 671039,
+  "adult": false,
+  "backdrop_path": "/gnf4Cb2rms69QbCnGFJyqwBWsxv.jpg",
+  "original_language": "fr",
+  "original_title": "Bronx",
+  "genre_ids": [
+    53,
+    28,
+    18,
+    80
+  ],
+  "Я": "Rogue City",
+  "vote_average": 6.1,
+  "overview": "Caught in the crosshairs of police corruption and Marseille’s warring gangs, a loyal cop must protect his squad by taking matters into his own hands.",
+  "release_date": "2020-10-30"
+}
 */

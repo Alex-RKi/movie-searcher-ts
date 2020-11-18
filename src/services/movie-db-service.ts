@@ -18,7 +18,7 @@ export default class MovieDBService {
     lang: "en-US" | "ru-RU" = "en-US"
   ) => {
     return await fetch(
-      `${this._API_URL}${id}/recommendations?${this._API_KEY}&language=${lang}&page=1`
+      `${this._API_URL}${id}/recommendations${this._API_KEY}&language=${lang}&page=1`
     ).then((res) => res.json());
   };
 
