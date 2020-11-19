@@ -15,20 +15,26 @@ interface ResponseInterface {
   readonly total_pages: number,
   readonly total_results: number
 }
+type searchLangType = "en-US" | "ru-RU";
+
 
 function App() {
   const movieDBService = new MovieDBService();
   const initial: any = [];
   const [popularsList, savePopulars] = useState(initial);
   const [favoritsList, setFavorited] = useState(initial);
+  const [searchResults, saveSearchResults] = useState(initial);
+  const [searchText, saveSearchText] = useState('');
 
   useEffect(() => {
     console.log('update state');
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
         const popularsList: [] = response.results;
-        savePopulars(popularsList)
+        savePopulars(popularsList);
+
       });
+
   }, []);
 
   const addToList = (data: object, arr: Array<object> | []): Array<object> => {
@@ -48,28 +54,52 @@ function App() {
       setFavorited(removeFromList(id, favoritsList)) :
       setFavorited(addToList(movieData, favoritsList));
   }
-  const searchInquire: Function = (query: string) => {
-    console.log(query);
+
+  const searchMovies: Function = (query: string) => {
+    if (query !== searchText) {
+      saveSearchText(query);
+    } else return;
+    if (query.length < 3) {
+      return;
+    }
+
+    let iquire = searchText;
+    console.log('inquire is ' + iquire)
+    let lang: searchLangType = "en-US";
+    if (/^[а-яА-Я]+$/.test(searchText)) {
+      lang = "ru-RU";
+      iquire = encodeURI(searchText);
+    }
+    movieDBService.searchMovie(iquire, lang)
+      .then((response: ResponseInterface) => {
+        saveSearchResults(response.results)
+      });
   };
   const MDBSProviderData: MDBServiceInterface = {
     favoritsList,
     popularsList,
     page: 3,
     toggleFavorit,
-    searchInquire: searchInquire,
+    searchMovies,
     searchResults: [],
-    recommededList: []
+    recommededList: [],
+    saveSearchText
   }
+
+  console.log('Text is ' + searchText);
   return (
-    <div className='bg-gradient-light d-flex flex-row flex-grow flex-wrap'>
-      <span>{ }</span>
-      <ErrorBoundry>
-        <MDBServiceContext.Provider value={MDBSProviderData}>
+
+    <ErrorBoundry>
+      <MDBServiceContext.Provider value={MDBSProviderData}>
+        <div className='d-flex flex-column flex-shrink-1 bg-gradient-light'>
           <Router>
             <Header />
             <Switch>
               <Route path='/' exact
-                render={(): any => <CardList list={popularsList} />}
+                render={(): any => <CardList list={searchText ? searchResults : popularsList} />}
+              />
+              <Route path='/results'
+                render={(): any => <CardList list={searchResults} />}
               />
               <Route path='/favorits'
                 render={() => <CardList list={favoritsList} />}
@@ -77,57 +107,16 @@ function App() {
               <Route path='/description/:id'
                 render={({ match }): any => {
                   const { id } = match.params;
-                  return <MovieDescription  id={id} />
+                  return <MovieDescription id={id} />
                 }}
               />
-
             </Switch>
           </Router>
           <Footer />
-        </MDBServiceContext.Provider>
-      </ErrorBoundry>
-    </div>
+        </div>
+      </MDBServiceContext.Provider>
+    </ErrorBoundry>
+
   );
 }
 export default App;
-
-/*
-adult: false
-backdrop_path: "/wu1uilmhM4TdluKi2ytfz8gidHf.jpg"
-genre_ids: Array(5) [ 14, 16, 12, … ]
-id: 400160
-original_language: "en"
-original_title: "The SpongeBob Movie: Sponge on the Run"
-overview: "When his ...."
-popularity: 1860.606
-poster_path: "/jlJ8nDhMhCYJuzOw3f52CP1W8MW.jpg"
-release_date: "2020-08-14"
-title: "The SpongeBob Movie: Sponge on the Run"
-video: false
-vote_average: 8.2
-vote_count: 1238
-*/
-
-/*
-{
-  "popularity": 2139.868,
-  "vote_count": 189,
-  "video": false,
-  "poster_path": "/9HT9982bzgN5on1sLRmc1GMn6ZC.jpg",
-  "id": 671039,
-  "adult": false,
-  "backdrop_path": "/gnf4Cb2rms69QbCnGFJyqwBWsxv.jpg",
-  "original_language": "fr",
-  "original_title": "Bronx",
-  "genre_ids": [
-    53,
-    28,
-    18,
-    80
-  ],
-  "Я": "Rogue City",
-  "vote_average": 6.1,
-  "overview": "Caught in the crosshairs of police corruption and Marseille’s warring gangs, a loyal cop must protect his squad by taking matters into his own hands.",
-  "release_date": "2020-10-30"
-}
-*/
