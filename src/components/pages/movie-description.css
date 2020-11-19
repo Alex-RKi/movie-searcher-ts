@@ -13,8 +13,6 @@
   flex-wrap: nowrap;
 }
 
-@media (max-width: 440px) {
-}
 @media (max-width: 690px) {
   .flex-container {
     flex-wrap: wrap;

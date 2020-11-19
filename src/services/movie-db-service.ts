@@ -1,7 +1,7 @@
 // INCOMING PARAMS: id, lang, query;
 export default class MovieDBService {
   _API_URL: string = "https://api.themoviedb.org/3/movie/";
-  _API_URL_SEACRCH: string = "https://api.themoviedb.org/3/search/movie?";
+  _API_URL_SEACRCH: string = "https://api.themoviedb.org/3/search/movie";
   _API_KEY: string = "?api_key=a28e64474e37ed0554fd9ce97aa5293b";
 
   getMovieDescription = async (
@@ -30,11 +30,12 @@ export default class MovieDBService {
 
   searchMovie = async (
     query: string = "",
-    page: number = 1,
-    lang: "en-US" | "ru-RU" = "en-US"
+    lang: "en-US" | "ru-RU" = "en-US",
+    page: number = 1
   ) => {
+    console.log(query);
     return await fetch(
-      `${this._API_URL_SEACRCH}${this._API_KEY}&language=${lang}&query=${query}&page=1&include_adult=false`
+      `${this._API_URL_SEACRCH}${this._API_KEY}&language=${lang}&query=${query}&page=${page}&include_adult=false`
     ).then((res) => res.json());
   };
 }

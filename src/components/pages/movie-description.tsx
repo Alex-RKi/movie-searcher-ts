@@ -9,6 +9,7 @@ import './movie-description.css'
 import posterPlaceholder from './posterPlaceholder.png'
 
 
+
 function MovieDescription(props: { id: number }) {
   const movieDBService = new MovieDBService();
   const { toggleFavorit, favoritsList } = useContext(MDBServiceContext)!;
@@ -20,6 +21,7 @@ function MovieDescription(props: { id: number }) {
   const checkInFavorits = (id: number) => {
     return favoritsList.some((elem: movieInterface) => elem.id === id)
   }
+
   useEffect((): any => {
     console.log('update description');
     let cancelled = false;
@@ -29,14 +31,17 @@ function MovieDescription(props: { id: number }) {
         !cancelled && setLiked(checkInFavorits(response.id))
       });
     movieDBService.getRecommendations(id)
+
       .then((response) => {
-        !cancelled && setRecommended(response.results);
+        const newRecomms = response.results.slice(0, 3);
+        !cancelled && setRecommended(newRecomms);
       });
+
     return () => cancelled = true;
   }, [id]);
-  if (!movie) return <Spinner />
 
 
+  if (!movie) return <Spinner />;
 
   let btnText = liked ?
     'Remove from Favorits' :
@@ -44,7 +49,7 @@ function MovieDescription(props: { id: number }) {
 
   const data: movieInterface = movie!;
   const {
-    poster_path, 
+    poster_path,
     backdrop_path,
     title,
     genres,
@@ -56,19 +61,16 @@ function MovieDescription(props: { id: number }) {
   let genresToString = genres.reduce((string: string, genre: any) => {
     return string += ` ${genre.name}`;
   }, '');
-  console.log(poster_path, backdrop_path);
-  console.log(backdrop_path ? backdrop_path : poster_path);
 
+  const src = poster_path ?
+    `http://image.tmdb.org/t/p/w342/${backdrop_path ? backdrop_path : poster_path}` :
+    posterPlaceholder;
 
-  const src = poster_path ? `http://image.tmdb.org/t/p/w342/${backdrop_path ? backdrop_path : poster_path}` : posterPlaceholder;
-
-  const poster = movie? <img src={src} alt={title} className='pic-sizer' /> : <Spinner />;
-    
-
+  const poster = movie ? <img src={src} alt={title} className='pic-sizer' /> :
+    <Spinner />;
   return (
-
     <ErrorBoundry>
-      <div>
+      <div className='bg-light w-100'>
         <div className='flex-container border border-black'>
           <div className='d-flex pic-container' >
             {poster}
@@ -89,13 +91,12 @@ function MovieDescription(props: { id: number }) {
             </button>
           </div>
         </div >
-
         {recommended ?
           <div>
             <h2 className='notif'>You may also like:</h2>
             <CardList list={recommended} />
           </div> :
-          <Spinner />}
+          <div className='jumbotron h-100'>No recommendations for this title</div>}
       </div>
     </ErrorBoundry>
   );
