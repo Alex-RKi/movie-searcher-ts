@@ -4,14 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 import './header.css';
 
 const Header = () => {
-  const { searchMovies, saveSearchText } = useContext(MDBServiceContext)!;
+  const {  saveSearchText } = useContext(MDBServiceContext)!;
   const [text, saveText] = useState('');
   let activeRoute = useLocation().pathname;
   const disable = activeRoute.length > 1;
   let  placeholder = disable ? '...' : 'Search...';
 
   useEffect(() => {
-    searchMovies(text.toLowerCase());
+    saveSearchText(text.toLowerCase());
   }, [text])
   
   return (

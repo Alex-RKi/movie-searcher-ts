@@ -36,6 +36,12 @@ function App() {
       });
 
   }, []);
+  useEffect(() => {
+    console.log('mounted, test is ' + searchText);
+    searchMovies(searchText);
+  }, [searchText])
+
+
 
   const addToList = (data: object, arr: Array<object> | []): Array<object> => {
     return [...arr, data];
@@ -56,19 +62,19 @@ function App() {
   }
 
   const searchMovies: Function = (query: string) => {
-    if (query !== searchText) {
-      saveSearchText(query);
-    } else return;
+    // if (query !== searchText) {
+    //   saveSearchText(query);
+    // } else return;
     if (query.length < 3) {
       return;
     }
 
-    let iquire = searchText;
+    let iquire = query;
     console.log('inquire is ' + iquire)
     let lang: searchLangType = "en-US";
-    if (/^[а-яА-Я]+$/.test(searchText)) {
+    if (/^[а-яА-Я]+$/.test(iquire)) {
       lang = "ru-RU";
-      iquire = encodeURI(searchText);
+      iquire = encodeURI(iquire);
     }
     movieDBService.searchMovie(iquire, lang)
       .then((response: ResponseInterface) => {
