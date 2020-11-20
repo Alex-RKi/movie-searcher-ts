@@ -1,19 +1,32 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { MDBServiceContext } from '../movie-db-service-provider';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './header.css';
 
-const Header = () => {
-  const {  saveSearchText } = useContext(MDBServiceContext)!;
+const Header = (props: {
+  trackLocation: Function,
+  getSearchText: Function
+}) => {
+  const { trackLocation, getSearchText } = props;
+  // const { getSearchText } = useContext(MDBServiceContext)!;
   const [text, saveText] = useState('');
   let activeRoute = useLocation().pathname;
   const disable = activeRoute.length > 1;
-  let  placeholder = disable ? '...' : 'Search...';
+  let placeholder = disable ? '...' : 'Search...';
 
   useEffect(() => {
-    saveSearchText(text.toLowerCase());
-  }, [text])
-  
+    getSearchText(text);
+  }, [text, activeRoute])
+
+  useEffect(() => {
+    trackLocation(activeRoute)
+  }, [activeRoute])
+
+
+
+  const handleInput = (e: any) => {
+    saveText(e.target.value);
+  }
+
   return (
     <div className='wrapper'>
       <nav className='justify-content-center'>
@@ -21,9 +34,7 @@ const Header = () => {
         <Link to='/favorits' className='btn btn-dark  btn-nav'>Favorits</Link>
         <input disabled={disable}
           className='form-control flex-grow-1 search'
-          onChange={(e) => {
-            saveText(e.target.value);
-          }}
+          onChange={handleInput}
           type='text' placeholder={placeholder}
           value={text} />
       </nav>

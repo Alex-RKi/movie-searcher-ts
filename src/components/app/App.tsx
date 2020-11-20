@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
 import ErrorBoundry from '../error_boundry';
 import MovieDBService from '../../services';
 import { MDBServiceContext, MDBServiceInterface } from '../movie-db-service-provider';
@@ -16,8 +16,6 @@ interface ResponseInterface {
   readonly total_results: number
 }
 type searchLangType = "en-US" | "ru-RU";
-
-
 function App() {
   const movieDBService = new MovieDBService();
   const initial: any = [];
@@ -25,24 +23,48 @@ function App() {
   const [favoritsList, setFavorited] = useState(initial);
   const [searchResults, saveSearchResults] = useState(initial);
   const [searchText, saveSearchText] = useState('');
+  const [page, setPage] = useState(1);
+  const [location, setLocation] = useState('/');
+
+  const trackLocation = (newLocation: string) => {
+    setLocation(newLocation);
+    saveSearchResults([]);
+  }
 
   useEffect(() => {
-    console.log('update state');
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
         const popularsList: [] = response.results;
         savePopulars(popularsList);
-
       });
-
   }, []);
-  useEffect(() => {
-    console.log('mounted, test is ' + searchText);
-    searchMovies(searchText);
-  }, [searchText])
+  useEffect((): any => {
+    document.addEventListener('scroll', trackScrolling);
+    let cancelled = false;
+    console.log('locatio is ' + location)
+    if (!cancelled && location === '/') searchMovies(searchText, page);
+    return () => {
+      document.removeEventListener('scroll', trackScrolling);
+      cancelled = true;
+    }
+  }, [searchText, page, location]);
 
+  const isBottom = (el: any) => {
+    return el.getBoundingClientRect().bottom <= window.innerHeight;
+  };
 
-
+  const getSearchText = (text: string) => {
+    saveSearchResults([]);
+    saveSearchText(text);
+  }
+  const trackScrolling = () => {
+    const wrappedElement = document.getElementById('footer');
+    if (isBottom(wrappedElement)) {
+      document.removeEventListener('scroll', trackScrolling);
+      const nextPage = page + 1;
+      setPage(nextPage);
+    }
+  };
   const addToList = (data: object, arr: Array<object> | []): Array<object> => {
     return [...arr, data];
   }
@@ -60,27 +82,27 @@ function App() {
       setFavorited(removeFromList(id, favoritsList)) :
       setFavorited(addToList(movieData, favoritsList));
   }
-
-  const searchMovies: Function = (query: string) => {
-    // if (query !== searchText) {
-    //   saveSearchText(query);
-    // } else return;
-    if (query.length < 3) {
+  const searchMovies: Function = (query: string, page: number = 1) => {
+    if (query.length < 1) {
       return;
     }
-
-    let iquire = query;
-    console.log('inquire is ' + iquire)
+    let inquire = query.toLowerCase();
     let lang: searchLangType = "en-US";
-    if (/^[а-яА-Я]+$/.test(iquire)) {
+    if (/^[а-яА-Я]+$/.test(inquire)) {
       lang = "ru-RU";
-      iquire = encodeURI(iquire);
+      inquire = encodeURI(inquire);
     }
-    movieDBService.searchMovie(iquire, lang)
+    movieDBService.searchMovie(inquire, lang, page)
       .then((response: ResponseInterface) => {
-        saveSearchResults(response.results)
+        if (response.results.length < 1) return;
+        const newResult = filterResults(searchResults, response.results)
+        saveSearchResults(newResult);
       });
   };
+  const filterResults = (prevRes: any, newRes: any) => {
+    const ids = new Set(prevRes.map((d: any) => d.id));
+    return [...prevRes, ...newRes.filter((d: any) => !ids.has(d.id))]
+  }
   const MDBSProviderData: MDBServiceInterface = {
     favoritsList,
     popularsList,
@@ -89,23 +111,19 @@ function App() {
     searchMovies,
     searchResults: [],
     recommededList: [],
-    saveSearchText
   }
-
-  console.log('Text is ' + searchText);
   return (
-
     <ErrorBoundry>
       <MDBServiceContext.Provider value={MDBSProviderData}>
         <div className='d-flex flex-column flex-shrink-1 bg-gradient-light'>
           <Router>
-            <Header />
+            <Header
+              trackLocation={trackLocation}
+              getSearchText={getSearchText}
+            />
             <Switch>
               <Route path='/' exact
                 render={(): any => <CardList list={searchText ? searchResults : popularsList} />}
-              />
-              <Route path='/results'
-                render={(): any => <CardList list={searchResults} />}
               />
               <Route path='/favorits'
                 render={() => <CardList list={favoritsList} />}
@@ -122,7 +140,6 @@ function App() {
         </div>
       </MDBServiceContext.Provider>
     </ErrorBoundry>
-
   );
 }
 export default App;

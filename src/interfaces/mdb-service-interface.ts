@@ -6,6 +6,5 @@ interface MDBServiceInterface {
   searchMovies: Function;
   searchResults: [];
   recommededList: [];
-  saveSearchText: Function;
 }
 export type { MDBServiceInterface };
