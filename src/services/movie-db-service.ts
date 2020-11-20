@@ -33,7 +33,6 @@ export default class MovieDBService {
     lang: "en-US" | "ru-RU" = "en-US",
     page: number = 1
   ) => {
-    console.log(query);
     return await fetch(
       `${this._API_URL_SEACRCH}${this._API_KEY}&language=${lang}&query=${query}&page=${page}&include_adult=false`
     ).then((res) => res.json());
