@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app';
-
+import store from './store';
+import { Provider } from 'react-redux';
+import ErrorBoundry from '../src/components/error_boundry';
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <ErrorBoundry>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </ErrorBoundry>
+  </React.StrictMode >,
   document.getElementById('root')
 );
 

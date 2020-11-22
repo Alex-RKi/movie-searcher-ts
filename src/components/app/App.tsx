@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ErrorBoundry from '../error_boundry';
 import MovieDBService from '../../services';
 import { MDBServiceContext, MDBServiceInterface } from '../movie-db-service-provider';
-import { movieInterface } from '../../interfaces'
+import { movieInterface } from '../../interfaces';
 import Footer from '../footer';
 import Header from '../header';
 import CardList from '../cards-list';
@@ -25,10 +25,10 @@ function App() {
   const [searchText, saveSearchText] = useState('');
   const [page, setPage] = useState(1);
   const [location, setLocation] = useState('/');
-
+  console.log('page now ' + page)
   const trackLocation = (newLocation: string) => {
     setLocation(newLocation);
-    saveSearchResults([]);
+    // saveSearchResults([]);
   }
 
   useEffect(() => {
@@ -41,8 +41,11 @@ function App() {
   useEffect((): any => {
     document.addEventListener('scroll', trackScrolling);
     let cancelled = false;
-    console.log('locatio is ' + location)
-    if (!cancelled && location === '/') searchMovies(searchText, page);
+    console.log('location is ' + location)
+    if (!cancelled && location === '/') {
+      console.log(searchText, page)
+      searchMovies(searchText, page);
+    }
     return () => {
       document.removeEventListener('scroll', trackScrolling);
       cancelled = true;
@@ -55,6 +58,7 @@ function App() {
 
   const getSearchText = (text: string) => {
     saveSearchResults([]);
+    setPage(1);
     saveSearchText(text);
   }
   const trackScrolling = () => {

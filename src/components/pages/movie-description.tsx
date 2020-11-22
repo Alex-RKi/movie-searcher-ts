@@ -17,29 +17,23 @@ function MovieDescription(props: { id: number }) {
   const [movie, setMovie] = useState();
   const [liked, setLiked] = useState(false)
   const [recommended, setRecommended] = useState();
-
   const checkInFavorits = (id: number) => {
     return favoritsList.some((elem: movieInterface) => elem.id === id)
   }
-
   useEffect((): any => {
-    console.log('update description');
     let cancelled = false;
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     movieDBService.getMovieDescription(id)
       .then((response) => {
         !cancelled && setMovie(response);
-        !cancelled && setLiked(checkInFavorits(response.id))
+        !cancelled && setLiked(checkInFavorits(response.id));
       });
     movieDBService.getRecommendations(id)
-
       .then((response) => {
-        const newRecomms = response.results.slice(0, 3);
-        !cancelled && setRecommended(newRecomms);
+        !cancelled && setRecommended(response.results);
       });
-
     return () => cancelled = true;
   }, [id]);
-
 
   if (!movie) return <Spinner />;
 
@@ -61,7 +55,6 @@ function MovieDescription(props: { id: number }) {
   let genresToString = genres.reduce((string: string, genre: any) => {
     return string += ` ${genre.name}`;
   }, '');
-
   const src = poster_path ?
     `http://image.tmdb.org/t/p/w342/${backdrop_path ? backdrop_path : poster_path}` :
     posterPlaceholder;

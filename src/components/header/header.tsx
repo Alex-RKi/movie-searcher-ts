@@ -15,7 +15,7 @@ const Header = (props: {
 
   useEffect(() => {
     getSearchText(text);
-  }, [text, activeRoute])
+  }, [text])
 
   useEffect(() => {
     trackLocation(activeRoute)

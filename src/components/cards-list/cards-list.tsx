@@ -15,7 +15,6 @@ function CardList(props: { list: any }) {
 
   if (list === undefined) throw new Error('Woops');
   let activeRoute = useLocation().pathname;
-  console.log(activeRoute);
   const messageFavsEmpty = list.length === 0 && activeRoute.includes('favorits') ?
     <div className='card empty'>Your favorits is empty</div> : null;
 
@@ -40,7 +39,7 @@ function CardList(props: { list: any }) {
   }
   return (
     <ErrorBoundry>
-      <div className='cards-list'>
+      <div className='cards-list' >
         {messageFavsEmpty}
         {createList(list)}
       </div>
