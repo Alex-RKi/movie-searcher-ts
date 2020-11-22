@@ -1,22 +1,17 @@
 import { movieInterface } from "../interfaces";
+import { SAVE_SEARCH_RESULTS, SaveSearchResultsActionType } from "../actions";
 
 const initialState = {
-  favorits: null as null | movieInterface[],
   searchResults: null as null | movieInterface[],
 };
 type InitialStateType = typeof initialState;
 
-
-
-//actionCreators
-
-
-const reducer = (state = initialState, action ) => {
+//reducer
+function searchResultsReducer(
+  state: InitialStateType = initialState,
+  action: SaveSearchResultsActionType
+) {
   switch (action.type) {
-    case UPDATE_FAVORITS:
-      return {
-        favorits: action.payload,
-      };
     case SAVE_SEARCH_RESULTS:
       return {
         searchResults: action.payload,
@@ -24,6 +19,6 @@ const reducer = (state = initialState, action ) => {
     default:
       return state;
   }
-};
+}
 
-export default reducer;
+export default searchResultsReducer;
