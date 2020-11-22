@@ -6,11 +6,11 @@ import {
 const initialState = {
   page: null as null | number
 };
-type InitialStateType = typeof initialState;
+type InitialStatePageType = typeof initialState;
 
 //reducer
 function pageReducer (
-  state: InitialStateType = initialState,
+  state: InitialStatePageType = initialState,
   action: savePageActionType
 )  {
   switch (action.type) {
@@ -22,5 +22,5 @@ function pageReducer (
       return state;
   }
 };
-
-export default pageReducer;
+export type { InitialStatePageType}
+export  {pageReducer};

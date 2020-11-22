@@ -1,28 +1,25 @@
 import { movieInterface } from "../interfaces";
-import {
-  UPDATE_FAVORITS,
-  UpdateFavoritsActionType
-} from "../actions";
+import { UPDATE_FAVORITS, UpdateFavoritsActionType } from "../actions";
 
 const initialState = {
-  favorits: null as null | movieInterface[]
+  favoritsList: null as null | movieInterface[],
 };
-type InitialStateType = typeof initialState;
+type InitialStateFavoritsListType = typeof initialState;
 
 //reducer
 
-function favoritsReducer (
-  state: InitialStateType = initialState,
+function favoritsReducer(
+  state: InitialStateFavoritsListType = initialState,
   action: UpdateFavoritsActionType
-)  {
+) {
   switch (action.type) {
     case UPDATE_FAVORITS:
       return {
-        favorits: action.payload,
+        favoritsList: action.payload,
       };
     default:
       return state;
   }
-};
-
-export default favoritsReducer;
+}
+export type { InitialStateFavoritsListType };
+export { favoritsReducer };

@@ -1,18 +1,22 @@
-import Redux from 'redux';
-import favoritsReducer from './favorits-reducer';
-import searchResultsReducer from './search-results-results-reducer';
-import popularsReducer from './populars-reducer';
-import searchTextReducer from './search-text-reducer';
-import pageReducer from './page-reducer';
-import locationReducer from './location-reducer';
+import { combineReducers } from 'redux';
+import { favoritsReducer } from './favorits-reducer';
+import { searchResultsReducer } from './search-results-reducer';
+import { popularsReducer } from './populars-reducer';
+import { searchTextReducer } from './search-text-reducer';
+import { pageReducer } from './page-reducer';
+import { locationReducer } from './location-reducer';
 
-const rootReducer = Redux.combineReducers({
-  favorits: favoritsReducer,
+const rootReducer  = combineReducers({
+  favoritsList: favoritsReducer,
   searchResults: searchResultsReducer,
-  populars: popularsReducer,
+  popularsList: popularsReducer,
   searchText: searchTextReducer,
   page: pageReducer,
   location: locationReducer
-})
+});
+type RootStateType = ReturnType<typeof rootReducer>;
 
+
+
+export type { RootStateType }
 export { rootReducer };

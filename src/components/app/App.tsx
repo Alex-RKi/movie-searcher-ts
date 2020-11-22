@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import ErrorBoundry from '../error_boundry';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  UpdateFavorits,
+  SaveSearchResults,
+  GetPopulars,
+  SaveSearchText,
+  savePage,
+  saveLocation
+} from '../../actions'
+import { RootStateType } from '../../reducers';
 import MovieDBService from '../../services';
 import { MDBServiceContext, MDBServiceInterface } from '../movie-db-service-provider';
 import { movieInterface } from '../../interfaces';
@@ -8,6 +17,8 @@ import Footer from '../footer';
 import Header from '../header';
 import CardList from '../cards-list';
 import { MovieDescription } from '../pages'
+import ErrorBoundry from '../error_boundry';
+import Spinner from '../spinner';
 
 interface ResponseInterface {
   readonly page: number,
@@ -16,26 +27,36 @@ interface ResponseInterface {
   readonly total_results: number
 }
 type searchLangType = "en-US" | "ru-RU";
-function App() {
+
+
+const App = () => {
+
   const movieDBService = new MovieDBService();
+  const dispatch = useDispatch();
   const initial: any = [];
-  const [popularsList, savePopulars] = useState(initial);
+
+  const { popularsList } = useSelector((state: RootStateType) => state.popularsList)
+  console.log(popularsList);
+  console.log('-----popularsList----');
+
   const [favoritsList, setFavorited] = useState(initial);
   const [searchResults, saveSearchResults] = useState(initial);
   const [searchText, saveSearchText] = useState('');
   const [page, setPage] = useState(1);
   const [location, setLocation] = useState('/');
-  console.log('page now ' + page)
+  console.log('page now ' + page);
+  console.log('text is ' + searchText);
   const trackLocation = (newLocation: string) => {
     setLocation(newLocation);
-    // saveSearchResults([]);
+
   }
 
   useEffect(() => {
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
-        const popularsList: [] = response.results;
-        savePopulars(popularsList);
+        const popularsList: movieInterface[] = response.results;
+        //savePopulars(popularsList);
+        dispatch(GetPopulars(popularsList))
       });
   }, []);
   useEffect((): any => {
@@ -43,7 +64,7 @@ function App() {
     let cancelled = false;
     console.log('location is ' + location)
     if (!cancelled && location === '/') {
-      console.log(searchText, page)
+      console.log(searchText, page);
       searchMovies(searchText, page);
     }
     return () => {
@@ -116,6 +137,7 @@ function App() {
     searchResults: [],
     recommededList: [],
   }
+  if (!popularsList) return <Spinner />
   return (
     <ErrorBoundry>
       <MDBServiceContext.Provider value={MDBSProviderData}>
@@ -145,5 +167,5 @@ function App() {
       </MDBServiceContext.Provider>
     </ErrorBoundry>
   );
-}
+};
 export default App;

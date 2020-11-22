@@ -4,11 +4,11 @@ import { SAVE_SEARCH_RESULTS, SaveSearchResultsActionType } from "../actions";
 const initialState = {
   searchResults: null as null | movieInterface[],
 };
-type InitialStateType = typeof initialState;
+type InitialStateSearcResultsType = typeof initialState;
 
 //reducer
 function searchResultsReducer(
-  state: InitialStateType = initialState,
+  state: InitialStateSearcResultsType = initialState,
   action: SaveSearchResultsActionType
 ) {
   switch (action.type) {
@@ -20,5 +20,5 @@ function searchResultsReducer(
       return state;
   }
 }
-
-export default searchResultsReducer;
+export type { InitialStateSearcResultsType };
+export { searchResultsReducer };

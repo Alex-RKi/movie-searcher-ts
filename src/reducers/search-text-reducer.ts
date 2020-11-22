@@ -6,15 +6,15 @@ import {
 const initialState = {
   searchText: null as null | string
 };
-type InitialStateType = typeof initialState;
+type InitialStateSearcTextType = typeof initialState;
 
 //reducer
 function searchTextReducer (
-  state: InitialStateType = initialState,
+  state: InitialStateSearcTextType = initialState,
   action: searchTextActionType
 )  {
   switch (action.type) {
-    case 'SAVE_SEARCH_TEXT':
+    case SAVE_SEARCH_TEXT:
       return {
         searchText: action.payload,
       };
@@ -22,5 +22,5 @@ function searchTextReducer (
       return state;
   }
 };
-
-export default searchTextReducer;
+export type { InitialStateSearcTextType }
+export { searchTextReducer };
