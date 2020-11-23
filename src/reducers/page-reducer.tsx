@@ -4,15 +4,15 @@ import {
 } from "../actions";
 
 const initialState = {
-  page: null as null | number
+  page: 1 as number
 };
 type InitialStatePageType = typeof initialState;
 
 //reducer
-function pageReducer (
+function pageReducer(
   state: InitialStatePageType = initialState,
   action: savePageActionType
-)  {
+) {
   switch (action.type) {
     case SAVE_PAGE:
       return {
@@ -22,5 +22,4 @@ function pageReducer (
       return state;
   }
 };
-export type { InitialStatePageType}
-export  {pageReducer};
+export { pageReducer };

@@ -1,10 +1,6 @@
+import { movieInterface } from './movie-interface'
 interface MDBServiceInterface {
-  favoritsList: any;
-  popularsList: any;
-  page: number;
+  favoritsList: movieInterface[];
   toggleFavorit: Function;
-  searchMovies: Function;
-  searchResults: [];
-  recommededList: [];
 }
 export type { MDBServiceInterface };

@@ -1,3 +1,4 @@
 import { movieInterface } from "./movie-interface"; // Provider data
 import { MDBServiceInterface } from "./mdb-service-interface"; // Context
-export type { movieInterface, MDBServiceInterface };
+import { ResponseInterface } from "./response-interfase";
+export type { movieInterface, MDBServiceInterface, ResponseInterface };

@@ -1,18 +1,15 @@
-import {
-  SAVE_SEARCH_TEXT,
-  searchTextActionType
-} from "../actions";
+import { SAVE_SEARCH_TEXT, searchTextActionType } from "../actions";
 
 const initialState = {
-  searchText: null as null | string
+  searchText: "" as string,
 };
 type InitialStateSearcTextType = typeof initialState;
 
 //reducer
-function searchTextReducer (
+function searchTextReducer(
   state: InitialStateSearcTextType = initialState,
   action: searchTextActionType
-)  {
+) {
   switch (action.type) {
     case SAVE_SEARCH_TEXT:
       return {
@@ -21,6 +18,5 @@ function searchTextReducer (
     default:
       return state;
   }
-};
-export type { InitialStateSearcTextType }
+}
 export { searchTextReducer };

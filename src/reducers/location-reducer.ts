@@ -1,7 +1,7 @@
 import { SAVE_LOCATION, SaveLocationActionType } from "../actions";
 
 const initialState = {
-  location: null as null | string,
+  location: "" as string,
 };
 type InitialStateLocationType = typeof initialState;
 
@@ -19,5 +19,4 @@ function locationReducer(
       return state;
   }
 }
-export type { InitialStateLocationType };
 export { locationReducer };

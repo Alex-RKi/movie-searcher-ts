@@ -34,19 +34,25 @@ type SaveLocationActionType = {
 };
 
 //action creators
-const UpdateFavorits: Function = (payload: movieInterface[]): UpdateFavoritsActionType => {
+const UpdateFavorits: Function = (
+  payload: movieInterface[]
+): UpdateFavoritsActionType => {
   return {
     type: UPDATE_FAVORITS,
     payload: payload,
   };
 };
-const SaveSearchResults: Function = (payload: movieInterface[]): SaveSearchResultsActionType => {
+const SaveSearchResults: Function = (
+  payload: movieInterface[]
+): SaveSearchResultsActionType => {
   return {
     type: SAVE_SEARCH_RESULTS,
     payload: payload,
   };
 };
-const GetPopulars: Function = (payload: movieInterface[]): GetPopularsActionType => {
+const GetPopulars: Function = (
+  payload: movieInterface[]
+): GetPopularsActionType => {
   return {
     type: GET_POPULARS,
     payload: payload,
@@ -58,13 +64,13 @@ const SaveSearchText: Function = (payload: string): searchTextActionType => {
     payload: payload,
   };
 };
-const savePage: Function = (page: number): savePageActionType => {
+const SavePage: Function = (page: number): savePageActionType => {
   return {
     type: SAVE_PAGE,
     payload: page,
   };
 };
-const saveLocation: Function = (location: string): SaveLocationActionType => {
+const SaveLocation: Function = (location: string): SaveLocationActionType => {
   return {
     type: SAVE_LOCATION,
     payload: location,
@@ -84,8 +90,8 @@ export {
   SaveSearchResults,
   GetPopulars,
   SaveSearchText,
-  savePage,
-  saveLocation,
+  SavePage,
+  SaveLocation,
   UPDATE_FAVORITS,
   SAVE_SEARCH_RESULTS,
   GET_POPULARS,

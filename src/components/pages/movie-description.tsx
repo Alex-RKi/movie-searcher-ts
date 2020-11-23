@@ -22,7 +22,7 @@ function MovieDescription(props: { id: number }) {
   }
   useEffect((): any => {
     let cancelled = false;
-    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     movieDBService.getMovieDescription(id)
       .then((response) => {
         !cancelled && setMovie(response);
@@ -84,12 +84,14 @@ function MovieDescription(props: { id: number }) {
             </button>
           </div>
         </div >
-        {recommended ?
-          <div>
-            <h2 className='notif'>You may also like:</h2>
-            <CardList list={recommended} />
-          </div> :
-          <div className='jumbotron h-100'>No recommendations for this title</div>}
+        {
+          recommended ?
+            <div>
+              <h2 className='notif'>You may also like:</h2>
+              <CardList list={recommended} />
+            </div> :
+            <Spinner />
+        }
       </div>
     </ErrorBoundry>
   );

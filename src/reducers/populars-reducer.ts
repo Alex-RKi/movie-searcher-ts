@@ -2,7 +2,7 @@ import { movieInterface } from "../interfaces";
 import { GET_POPULARS, GetPopularsActionType } from "../actions";
 
 const initialState = {
-  popularsList: null as null | movieInterface[],
+  popularsList: [] as [] | movieInterface[],
 };
 type InitialStatePopularsListType = typeof initialState;
 

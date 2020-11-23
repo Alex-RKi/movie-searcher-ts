@@ -6,7 +6,7 @@ import { searchTextReducer } from './search-text-reducer';
 import { pageReducer } from './page-reducer';
 import { locationReducer } from './location-reducer';
 
-const rootReducer  = combineReducers({
+const rootReducer = combineReducers({
   favoritsList: favoritsReducer,
   searchResults: searchResultsReducer,
   popularsList: popularsReducer,

@@ -7,7 +7,6 @@ const Header = (props: {
   getSearchText: Function
 }) => {
   const { trackLocation, getSearchText } = props;
-  // const { getSearchText } = useContext(MDBServiceContext)!;
   const [text, saveText] = useState('');
   let activeRoute = useLocation().pathname;
   const disable = activeRoute.length > 1;
@@ -15,18 +14,14 @@ const Header = (props: {
 
   useEffect(() => {
     getSearchText(text);
-  }, [text])
-
+  }, [text]);
   useEffect(() => {
     trackLocation(activeRoute)
-  }, [activeRoute])
-
-
+  }, [activeRoute]);
 
   const handleInput = (e: any) => {
     saveText(e.target.value);
   }
-
   return (
     <div className='wrapper'>
       <nav className='justify-content-center'>

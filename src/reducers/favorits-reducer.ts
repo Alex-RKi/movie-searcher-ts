@@ -2,7 +2,7 @@ import { movieInterface } from "../interfaces";
 import { UPDATE_FAVORITS, UpdateFavoritsActionType } from "../actions";
 
 const initialState = {
-  favoritsList: null as null | movieInterface[],
+  favoritsList: [] as [] | movieInterface[],
 };
 type InitialStateFavoritsListType = typeof initialState;
 
@@ -21,5 +21,4 @@ function favoritsReducer(
       return state;
   }
 }
-export type { InitialStateFavoritsListType };
 export { favoritsReducer };

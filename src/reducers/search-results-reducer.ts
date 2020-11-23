@@ -2,7 +2,7 @@ import { movieInterface } from "../interfaces";
 import { SAVE_SEARCH_RESULTS, SaveSearchResultsActionType } from "../actions";
 
 const initialState = {
-  searchResults: null as null | movieInterface[],
+  searchResults: [] as [] | movieInterface[],
 };
 type InitialStateSearcResultsType = typeof initialState;
 
@@ -20,5 +20,4 @@ function searchResultsReducer(
       return state;
   }
 }
-export type { InitialStateSearcResultsType };
 export { searchResultsReducer };
