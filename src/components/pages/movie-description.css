@@ -25,8 +25,8 @@
   .pic-sizer {
     min-width: 100%;
   }
-
-}.notif {
-    padding: 2rem;
-    text-align: center;
+}
+.notif {
+  padding: 2rem;
+  text-align: center;
 }
