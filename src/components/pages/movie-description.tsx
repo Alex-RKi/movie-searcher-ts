@@ -6,7 +6,7 @@ import Spinner from '../spinner';
 import CardList from '../cards-list';
 import ErrorBoundry from '../error_boundry';
 import './movie-description.css'
-import posterPlaceholder from './posterPlaceholder.png'
+import posterPlaceholder from '../../posterPlaceholder.png'
 
 
 

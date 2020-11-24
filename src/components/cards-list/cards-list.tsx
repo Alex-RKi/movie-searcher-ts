@@ -7,7 +7,7 @@ import { movieInterface } from '../../interfaces';
 import MovieCard from '../movie-card';
 import ErrorBoundry from '../error_boundry';
 import './cards-list.css';
-import cardPlaceholder from './cardPlaceholder.png';
+import cardPlaceholder from '../../cardPlaceholder.png';
 
 
 function CardList(props: { list: any }) {

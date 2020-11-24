@@ -31,8 +31,9 @@ const MovieCard = (props: cardInterface) => {
       </button>
       <Link to={`/description/${id}`}>
         <img className='poster' src={src} alt={title} />
+        <span className='title card-header'>{title}</span>
       </Link>
-      <span className='title card-header'>{title}</span>
+      
     </div>
 
   );
