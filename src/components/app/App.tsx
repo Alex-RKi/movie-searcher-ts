@@ -118,7 +118,7 @@ const App = () => {
   return (
     <ErrorBoundry>
       <MDBServiceContext.Provider value={MDBSProviderData}>
-        <div className='d-flex flex-column flex-shrink-1 bg-gradient-light'>
+        <div className='d-flex flex-column flex-shrink-1 bg-secondary'>
           <Router>
             <Header
               trackLocation={trackLocation}
