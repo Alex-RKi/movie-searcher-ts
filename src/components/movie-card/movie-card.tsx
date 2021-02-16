@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MDBServiceContext } from '../movie-db-service-provider';
+import Spinner from '../spinner';
 import './movie-card.css';
 
 interface cardInterface {
@@ -12,6 +13,12 @@ interface cardInterface {
 }
 
 const MovieCard = (props: cardInterface) => {
+  const [loading, setLoading] = useState(true);
+  const imageLoader = () => {
+    setLoading(false);
+  }
+
+
   const { src, title, id, favorited, movieData } = props;
   const { toggleFavorit } = useContext(MDBServiceContext)!;
 
@@ -30,10 +37,19 @@ const MovieCard = (props: cardInterface) => {
         </svg>
       </button>
       <Link to={`/description/${id}`}>
-        <img className='poster' src={src} alt={title} />
+        <div className='blank' style={{ display: loading ? 'block' : 'none', width: "342px", height: "513px" }}>
+          {/* <div className="loader">LOADING...</div> */}
+          <div className='spinnerContainer'><Spinner /></div>
+        </div>
+        <div>
+          <img style={{ display: loading ? 'none' : 'block' }} className='poster' src={src} alt={title} onLoad={imageLoader} />
+        </div>
+
+
+
         <span className='title card-header'>{title}</span>
       </Link>
-      
+
     </div>
 
   );

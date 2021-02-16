@@ -47,3 +47,12 @@
 .title:hover {
   background-color: black;
 }
+.blank {
+  min-width: "342px";
+  min-height: "513px";
+}
+.spinnerContainer {
+  position: absolute;
+  left: 20%;
+  top: 25%;
+}

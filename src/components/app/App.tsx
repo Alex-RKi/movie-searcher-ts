@@ -36,9 +36,10 @@ const App = () => {
   useEffect(() => {
     movieDBService.getPopular()
       .then((response: ResponseInterface) => {
-        const popularsList: movieInterface[] = response.results;
-        dispatch(GetPopulars(popularsList))
+        const list: movieInterface[] = response.results;
+        dispatch(GetPopulars(list))
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     document.addEventListener('scroll', trackScrolling);
@@ -50,6 +51,7 @@ const App = () => {
       document.removeEventListener('scroll', trackScrolling);
       cancelled = true;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText, page, location]);
 
   const isBottom = (el: HTMLElement) => {

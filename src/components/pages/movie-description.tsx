@@ -17,6 +17,13 @@ function MovieDescription(props: { id: number }) {
   const [movie, setMovie] = useState();
   const [liked, setLiked] = useState(false)
   const [recommended, setRecommended] = useState();
+  const [loading, setLoading] = useState(true);
+
+
+  const imageLoader = () => {
+    setLoading(false);
+  }
+
   const checkInFavorits = (id: number) => {
     return favoritsList.some((elem: movieInterface) => elem.id === id)
   }
@@ -33,6 +40,7 @@ function MovieDescription(props: { id: number }) {
         !cancelled && setRecommended(response.results);
       });
     return () => cancelled = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   if (!movie) return <Spinner />;
@@ -52,22 +60,30 @@ function MovieDescription(props: { id: number }) {
     release_date
   } = data;
 
-  let genresToString = genres.reduce((string: string, genre: any) => {
-    return string += ` ${genre.name}`;
-  }, '');
   const src = poster_path ?
     `http://image.tmdb.org/t/p/w342/${backdrop_path ? backdrop_path : poster_path}` :
     posterPlaceholder;
+  let genresToString = genres.reduce((string: string, genre: any) => {
+    return string += ` ${genre.name}`;
+  }, '');
 
-  const poster = movie ? <img src={src} alt={title} className='pic-sizer' /> :
-    <Spinner />;
+  // const poster = movie ? <img src={src} alt={title} className='pic-sizer' /> :
+  //   <Spinner />;
   return (
     <ErrorBoundry>
       <div className='bg-light w-100'>
         <div className='flex-container border border-black'>
+
+
+
           <div className='d-flex pic-container' >
-            {poster}
+            <div className='spinnerContainer' style={{ display: loading ? 'block' : 'none' }}>
+              <Spinner />
+            </div>
+            <img style={{ display: loading ? 'none' : 'block' }} className='pic-sizer' src={src} alt={title} onLoad={imageLoader} />
           </div>
+
+
           <div className='card card-body'>
             <h1>{title}</h1>
             <span className="text-muted spacer">Rating: {vote_average}</span>
