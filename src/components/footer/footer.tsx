@@ -8,7 +8,10 @@ const Footer = () => {
 
   return (
     <footer id='footer' className=' mt-5 w-100 h-100'>
-      <button className='m-2 w-100 btn btn-outline-secondary' onClick={scrollToTop}>Scroll to top</button>
+      <div className='d-flex align-items-center'>
+        <button className='d-block m-2 w-100 btn btn-outline-secondary' onClick={scrollToTop}>Scroll to top</button>
+      </div>
+
 
 
       <hr></hr>
